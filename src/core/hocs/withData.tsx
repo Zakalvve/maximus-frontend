@@ -15,7 +15,7 @@ export function withDataFactory<
         TProps & ReturnType<typeof useQueryFactory<TResult, TParams, TOptions>>
         >
     ) {
-        return function DataProviderComponent(props: TProps & { params: QueryFactoryParams<TParams, TOptions> }) {
+        return function DataProviderComponent(props: TProps & { params?: QueryFactoryParams<TParams, TOptions> }) {
             const queryResult = useQueryFactory(queryHook, props.params, options);
             return <WrappedComponent {...props} {...queryResult} />;
         };

@@ -8,7 +8,7 @@ const createUser = (data: CreateUserData): Promise<AxiosResponse> => {
 }
 
 const userClient = {
-    createUser: () => useTanstackMutation(createUser)
+    useCreateUser: () => useTanstackMutation(createUser)
 }
 
 export default userClient;

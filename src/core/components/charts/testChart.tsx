@@ -1,15 +1,15 @@
 'use-client'
 
-import { useMemo, useState } from "react";
-import client from "../api/client";
-import { Area, AreaChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
+import client from "@/core/api/client";
+import { useMemo } from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 
 const TestChart = () => {
 
     const metric = 'PensionWithdrawn';
 
-    const { data, isLoading } = client.projections.getProjectionSeries({
+    const { data, isLoading } = client.projections.useGetProjectionSeries({
         projectionId: 'c0cfce38-d950-4b17-a6ac-c7a8d8afe967',
         series: [metric],
         iterations: [0],

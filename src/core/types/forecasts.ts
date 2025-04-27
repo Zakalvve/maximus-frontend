@@ -71,7 +71,7 @@ interface OperationSettings {
     type: string
 }
 
-interface FixedStandingOrderOperationSettings extends OperationSettings {
+export interface FixedStandingOrderOperationSettings extends OperationSettings {
     type: 'FixedStandingOrderOperationSettings'
     fromAccount: string
     toAccount: string

@@ -8,17 +8,17 @@ import {
   PieChart,
   Send,
   Settings2,
-  SquareTerminal,
 } from "lucide-react"
 
-import { NavMain } from "@/core/components/nav-main"
-import { NavSecondary } from "@/core/components/nav-secondary"
-import { NavUser } from "@/core/components/nav-user"
+import { NavMain } from "@/core/components/sidebar/nav-main"
+import { NavSecondary } from "@/core/components/sidebar/nav-secondary"
+import { NavUser } from "@/core/components/sidebar/nav-user"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
 } from "@/core/components/ui/sidebar"
+import NavProjections from "./nav-projections"
 
 const data = {
   user: {
@@ -26,33 +26,12 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navMain: [
-    {
-      title: "Projections",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "Projection 1",
-          url: "#",
-        },
-        {
-          title: "Projection 2",
-          url: "#",
-        },
-        {
-          title: "Projection 3",
-          url: "#",
-        },
-      ],
-    },
-  ],
   navSecondary: [
     {
       title: "Settings",
       url: "#",
       icon: Settings2,
+      isActive: true,
       items: [
         {
           title: "General",
@@ -111,7 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {...props}
     >
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavProjections />
         <NavMain items={data.navSecondary} />
         <NavSecondary items={data.navTertiary} className="mt-auto" />
       </SidebarContent>

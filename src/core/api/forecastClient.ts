@@ -16,9 +16,9 @@ const createForecast = (data: CreateForecastData) => {
 }
 
 const forecastClient = {
-    getForecast: (params: GetForecastParams) => useTanstackQuery(getForecast, ['get-forecast'], params),
-    promoteForecast: () => useTanstackMutation(promoteForecast),
-    createForecast: () => useTanstackMutation(createForecast)
+    useGetForecast: (params: GetForecastParams) => useTanstackQuery(getForecast, ['get-forecast'], params),
+    usePromoteForecast: () => useTanstackMutation(promoteForecast),
+    useCreateForecast: () => useTanstackMutation(createForecast)
 }
 
 export default forecastClient;

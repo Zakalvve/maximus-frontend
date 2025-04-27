@@ -6,10 +6,10 @@ import { PagedQuery, PagedResponse, QueryFactoryOptions, QueryFactoryParams, Que
 
 export function useQueryFactory<TResult extends QueryResult, TParams extends QueryParams, TOptions extends QueryFactoryOptions>(
     queryHook: (params: QueryFactoryParams<TParams, TOptions>) => UseQueryResult<QueryFactoryResult<TResult, TOptions>, Error>,
-    initialParams: QueryFactoryParams<TParams, TOptions>,
+    initialParams?: QueryFactoryParams<TParams, TOptions>,
     options?: TOptions
 ) {
-    const [params, setParams] = useState<QueryFactoryParams<TParams, TOptions>>(initialParams);
+    const [params, setParams] = useState<QueryFactoryParams<TParams, TOptions>>(initialParams || {} as QueryFactoryParams<TParams, TOptions>);
 
     const query = queryHook(params);
 

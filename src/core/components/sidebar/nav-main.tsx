@@ -17,6 +17,8 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/core/components/ui/sidebar"
+import { Skeleton } from "../ui/skeleton"
+import Link from "next/link"
 
 export function NavMain({
   items,
@@ -29,7 +31,9 @@ export function NavMain({
     items?: {
       title: string
       url: string
-    }[]
+      key?: string
+    }[],
+    skeletons?: number
   }[]
 }) {
   return (
@@ -39,12 +43,12 @@ export function NavMain({
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip={item.title}>
-                <a href={item.url}>
+                <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
-              {item.items?.length ? (
+              {(item.items?.length || item.skeletons) ? (
                 <>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuAction className="data-[state=open]:rotate-90">
@@ -54,15 +58,21 @@ export function NavMain({
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>
-                      {item.items?.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </a>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
+                      {item.items?.length
+                        ? item.items.map((subItem) => (
+                          <SidebarMenuSubItem key={subItem.key ?? subItem.title}>
+                            <SidebarMenuSubButton asChild>
+                              <Link href={subItem.url}>
+                                <span>{subItem.title}</span>
+                              </Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))
+                        : [...Array(item.skeletons)].map((_, index) => (
+                          <SidebarMenuSubItem key={`skeleton-${index}`}>
+                            <Skeleton className="h-6 w-full rounded-md" />
+                          </SidebarMenuSubItem>
+                        ))}
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </>

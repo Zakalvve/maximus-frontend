@@ -24,10 +24,10 @@ const getAccountSeries = (query: AccountSeriesParams): ApiResponse<Record<string
 }
 
 const accountClient = {
-    getAccounts: () => useTanstackQuery(getAccounts, ['get-accounts']),
-    getAccount: (query: AccountQuery) => useTanstackQuery(getAccount, ['get-account'], query),
-    getAccountTransactions: (query: AccountTransactionsParams) => useTanstackQuery(getAccountTransactions, ['get-account-transactions'], query),
-    getAccountSeries: (query: AccountSeriesParams) => useTanstackQuery(getAccountSeries, ['get-account-series'], query)
+    useGetAccounts: () => useTanstackQuery(getAccounts, ['get-accounts']),
+    useGetAccount: (query: AccountQuery) => useTanstackQuery(getAccount, ['get-account'], query),
+    useGetAccountTransactions: (query: AccountTransactionsParams) => useTanstackQuery(getAccountTransactions, ['get-account-transactions'], query),
+    useGetAccountSeries: (query: AccountSeriesParams) => useTanstackQuery(getAccountSeries, ['get-account-series'], query)
 }
 
 export default accountClient;

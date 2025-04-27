@@ -5,7 +5,7 @@ export type ApiResponse<T> = Promise<AxiosResponse<T>>
 
 export type QueryParamsOrUndefined = object | undefined
 export type QueryParams = Exclude<QueryParamsOrUndefined, undefined>
-export type QueryResult = any
+export type QueryResult = unknown
 
 export type QueryFactoryOptions = { pagination?: boolean; sorting?: boolean } | undefined;
 
@@ -20,16 +20,16 @@ export interface SortableQuery extends QueryParams {
     sortableColumns?: string[];
 }
 
-export interface PagedResponse<TData> extends QueryResult {
+export interface PagedResponse<TData> {
     items: TData[];
     totalCount: number;
 }
 
 
 // Ensures correct query parameters when pagination/sorting are enabled
-export type QueryFactoryParams<TParams extends QueryParams, TOptions extends QueryFactoryOptions> = TParams &
-    (TOptions extends { pagination: true } ? PagedQuery : {}) &
-    (TOptions extends { sorting: true } ? SortableQuery : {});
+export type QueryFactoryParams<TParams extends QueryParamsOrUndefined, TOptions extends QueryFactoryOptions> = TParams &
+    (TOptions extends { pagination: true } ? PagedQuery : object) &
+    (TOptions extends { sorting: true } ? SortableQuery : object);
 
 // Ensures correct query response type when pagination is enabled
 export type QueryFactoryResult<TResult extends QueryResult, TOptions extends QueryFactoryOptions> = TOptions extends { pagination: true }
@@ -38,7 +38,7 @@ export type QueryFactoryResult<TResult extends QueryResult, TOptions extends Que
 
 export type MutationDataOrUndefined = object | undefined
 export type MutationData = Exclude<MutationDataOrUndefined, undefined>
-export type MutationResult = any
+export type MutationResult = unknown
 
 export type TrackedMutationState = 'idle' | 'pending' | 'success' | 'error';
 

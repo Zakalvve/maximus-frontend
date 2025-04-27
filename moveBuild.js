@@ -1,8 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
-const nextBuildPath = path.join(__dirname, "out");
-const destinationPath = path.join(__dirname, "../Maximus.Server/obj/Host/bin/clientdist");
+const projectRoot = __dirname;
+
+const standalonePath = path.join(projectRoot, ".next", "standalone");
+const staticSourcePath = path.join(projectRoot, ".next", "static");
+const staticDestPath = path.join(standalonePath, ".next", "static");
+
+const finalDestination = path.join(projectRoot, "../Maximus.Server/obj/Host/bin/frontend");
 
 function removeDir(dir) {
     if (fs.existsSync(dir)) {
@@ -18,10 +23,25 @@ function removeDir(dir) {
     }
 }
 
+function removeDir(dir) {
+    if (fs.existsSync(dir)) {
+        fs.readdirSync(dir).forEach((file) => {
+            const fullPath = path.join(dir, file);
+            if (fs.lstatSync(fullPath).isDirectory()) {
+                removeDir(fullPath);
+            } else {
+                fs.unlinkSync(fullPath);
+            }
+        });
+        fs.rmdirSync(dir);
+    }
+}
+
+// Utility to copy directory recursively
 function copyDir(src, dest) {
     if (!fs.existsSync(src)) {
         console.error(`❌ Source directory does not exist: ${src}`);
-        return;
+        return false;
     }
 
     if (!fs.existsSync(dest)) {
@@ -39,12 +59,43 @@ function copyDir(src, dest) {
             console.log(`📂 Copying: ${srcPath} → ${destPath}`);
         }
     });
+
+    return true;
 }
 
-console.log("🚀 Moving Next.js build to the build directory...");
+console.log("🚀 Preparing Next.js standalone frontend...");
 
-removeDir(destinationPath);
+// Step 1: Move static/ into standalone/.next/static
+console.log("🔄 Moving static assets...");
 
-copyDir(nextBuildPath, destinationPath);
+const fullStandaloneNextPath = path.join(standalonePath, ".next");
+if (!fs.existsSync(fullStandaloneNextPath)) {
+    fs.mkdirSync(fullStandaloneNextPath, { recursive: true });
+}
 
-console.log("✅ Next.js build moved to build driectory");
+// Clean up old static if exists
+removeDir(staticDestPath);
+
+// Copy static files into correct position
+let staticCopied = copyDir(staticSourcePath, staticDestPath);
+
+if (!staticCopied) {
+    console.error("❌ Failed to copy static assets. Aborting...");
+    process.exit(1);
+}
+
+// Step 2: Copy standalone to destination
+console.log("🚛 Moving standalone to build directory...");
+
+// Clean destination first
+removeDir(finalDestination);
+
+// Copy everything from standalone
+let standaloneCopied = copyDir(standalonePath, finalDestination);
+
+if (standaloneCopied) {
+    console.log("✅ Standalone app moved successfully!");
+} else {
+    console.error("❌ Failed to move standalone app.");
+    process.exit(1);
+}
